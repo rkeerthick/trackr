@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Slate & Sky CSS variables ── */
+:root {
+  /* Base palette */
+  --ss-surface:        #F4F6F9;
+  --ss-subtle:         #EDF1F7;
+  --ss-border:         #DCE5F0;
+  --ss-muted:          #B8CDE0;
+  --ss-text-3:         #6B8099;
+  --ss-text-2:         #3A5A72;
+  --ss-text-1:         #1E2B3C;
+  --ss-darkest:        #111822;
+
+  /* Brand */
+  --ss-blue-50:        #EBF3FC;
+  --ss-blue-100:       #D6E4F0;
+  --ss-blue-500:       #3A7BD5;
+  --ss-blue-700:       #2560B0;
+  --ss-purple:         #7C5CBF;
+
+  /* Semantic */
+  --ss-income:         #2EB87E;
+  --ss-income-bg:      #E8F7F0;
+  --ss-income-border:  #B6E8D4;
+
+  --ss-expense:        #E05A6A;
+  --ss-expense-bg:     #FEF0F0;
+  --ss-expense-border: #F5C0C7;
+
+  --ss-loan:           #7C5CBF;
+  --ss-loan-bg:        #EEF0FB;
+  --ss-loan-border:    #CEC9EF;
+
+  --ss-borrow:         #F59C3A;
+  --ss-borrow-bg:      #FFF5E8;
+  --ss-borrow-border:  #FDDDB0;
+
+  --ss-split:          #3A7BD5;
+  --ss-split-bg:       #EDF2FA;
+  --ss-split-border:   #C0D4F0;
+
+  --ss-recurring:      #5A8FAA;
+  --ss-recurring-bg:   #F0F4F9;
+  --ss-recurring-border: #C0D8E8;
+
+  /* Sidebar */
+  --ss-sidebar-bg:     #1E2B3C;
+  --ss-sidebar-active: #3A7BD5;
+  --ss-sidebar-text:   #8FA8C0;
+  --ss-sidebar-hover:  rgba(255,255,255,0.06);
+}
+
+
+/* ── Base reset ── */
+@layer base {
+  * {
+    @apply border-slate-border;
+  }
+
+  body {
+    background-color: var(--ss-surface);
+    color: var(--ss-text-1);
+    font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    color: var(--ss-text-1);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  p, li {
+    color: var(--ss-text-1);
+  }
+
+  input, select, textarea {
+    font-family: "Inter", system-ui, sans-serif;
+  }
+}
+
+/* ── Utility classes ── */
+@layer utilities {
+  .text-muted   { color: var(--ss-text-3); }
+  .text-label   { color: var(--ss-text-2); }
+  .bg-surface   { background: var(--ss-surface); }
+  .bg-subtle    { background: var(--ss-subtle); }
+  .border-base  { border: 0.5px solid var(--ss-border); }
+
+  /* Amount colors */
+  .amount-income    { color: var(--ss-income); }
+  .amount-expense   { color: var(--ss-expense); }
+  .amount-loan      { color: var(--ss-loan); }
+  .amount-borrow    { color: var(--ss-borrow); }
+  .amount-split     { color: var(--ss-split); }
+  .amount-recurring { color: var(--ss-recurring); }
+
+  /* Card */
+  .card {
+    background: white;
+    border: 0.5px solid var(--ss-border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+
+  /* Scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ss-border) transparent;
+  }
+
+  /* Hide scrollbar on bottom nav track */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+}
