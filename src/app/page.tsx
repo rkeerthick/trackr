@@ -1,3 +1,5 @@
-export default async function HomePage() {
-  return <div style={{ padding: 40, fontFamily: "sans-serif" }}>Trackr is running ✓ — build ok</div>;
+import { redirect } from "next/navigation";
+
+export default function HomePage() {
+  redirect("/login");
 }
