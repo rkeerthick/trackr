@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-
 export default async function HomePage() {
-  redirect("/login");
+  return <div style={{ padding: 40, fontFamily: "sans-serif" }}>Trackr is running ✓ — build ok</div>;
 }
