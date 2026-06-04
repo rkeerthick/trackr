@@ -38,7 +38,7 @@ async function getData(userId: string, month: number, year: number) {
     else                       entry.expense += Number(tx.amount);
   }
 
-  const monthlyTrend = [...monthMap.entries()].map(([key, val]) => {
+  const monthlyTrend = Array.from(monthMap.entries()).map(([key, val]) => {
     const [y, m] = key.split("-").map(Number);
     const label  = new Date(y, m - 1, 1).toLocaleString("en-IN", { month: "short", year: "2-digit" });
     return { label, income: val.income, expense: val.expense };

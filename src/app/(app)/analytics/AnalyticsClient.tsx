@@ -69,7 +69,7 @@ export default function AnalyticsClient({ transactions, monthlyTrend, month, yea
       if (!map.has(key)) map.set(key, { name, color, value: 0 });
       map.get(key)!.value += tx.amount;
     }
-    return [...map.values()].sort((a, b) => b.value - a.value);
+    return Array.from(map.values()).sort((a, b) => b.value - a.value);
   }, [transactions, activeType]);
 
   const pieTotal = byCategory.reduce((s, c) => s + c.value, 0);

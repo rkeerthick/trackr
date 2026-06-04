@@ -94,7 +94,7 @@ export default function TransactionsClient({
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(tx);
     }
-    return [...map.entries()].sort((a, b) => b[0].localeCompare(a[0]));
+    return Array.from(map.entries()).sort((a, b) => b[0].localeCompare(a[0]));
   }, [filtered]);
 
   async function handleSubmit(e: React.FormEvent) {
