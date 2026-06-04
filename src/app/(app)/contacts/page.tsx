@@ -1,9 +1,10 @@
-import { auth } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import ContactsClient from "./ContactsClient";
 
 export default async function ContactsPage() {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   const userId  = session!.user!.id!;
 
   const contacts = await prisma.contact.findMany({

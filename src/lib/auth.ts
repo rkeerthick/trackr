@@ -1,4 +1,5 @@
-import NextAuth from "next-auth";
+import { type NextAuthOptions } from "next-auth";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
@@ -10,12 +11,12 @@ const loginSchema = z.object({
   password: z.string().min(6),
 });
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   pages: {
-    signIn:  "/login",
-    signOut: "/login",
-    error:   "/login",
+    signIn: "/login",
+    error:  "/login",
   },
   providers: [
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
@@ -35,7 +36,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!parsed.success) return null;
 
         const { email, password } = parsed.data;
-
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user || !user.password) return null;
 
@@ -53,9 +53,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async session({ session, token }) {
       if (token.id && session.user) {
-        session.user.id = token.id as string;
+        (session.user as { id?: string }).id = token.id as string;
       }
       return session;
     },
   },
-});
+};

@@ -1,9 +1,10 @@
-import { auth } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SplitsClient from "./SplitsClient";
 
 export default async function SplitsPage() {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   const userId  = session!.user!.id!;
 
   const [splits, contacts] = await Promise.all([

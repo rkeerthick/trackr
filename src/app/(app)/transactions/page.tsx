@@ -1,4 +1,5 @@
-import { auth } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import TransactionsClient from "./TransactionsClient";
 
@@ -43,7 +44,7 @@ export default async function TransactionsPage({
 }: {
   searchParams: { month?: string; year?: string; new?: string };
 }) {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   const now     = new Date();
   const month   = Number(searchParams.month)  || now.getMonth() + 1;
   const year    = Number(searchParams.year)   || now.getFullYear();
