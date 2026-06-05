@@ -1,10 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  themeColor: "#1E2B3C",
+};
 
 export const metadata: Metadata = {
   title:       "Trackr — Personal Finance",
   description: "Track income, expenses, lending, borrowing, budgets and more.",
-  themeColor:  "#1E2B3C",
+  icons: {
+    icon:        "/favicon.svg",
+    shortcut:    "/favicon.svg",
+    apple:       "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
