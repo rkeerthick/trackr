@@ -6,7 +6,7 @@ import { signOut } from "next-auth/react";
 import { cn, initials } from "@/lib/utils";
 import {
   LayoutDashboard, ArrowLeftRight, PieChart, Target,
-  Users, Calculator, RefreshCw, Wallet,
+  Users, Calculator, RefreshCw, Wallet, Trophy,
   Settings, LogOut, ChevronLeft,
 } from "lucide-react";
 import { useAppStore } from "@/store/app.store";
@@ -16,6 +16,7 @@ const NAV = [
   { href: "/transactions", label: "Transactions", icon: ArrowLeftRight  },
   { href: "/analytics",    label: "Analytics",    icon: PieChart        },
   { href: "/budgets",      label: "Budgets",      icon: Target          },
+  { href: "/goals",        label: "Goals",        icon: Trophy          },
   { href: "/loans",        label: "Loans",        icon: Wallet          },
   { href: "/splits",       label: "Splits",       icon: Calculator      },
   { href: "/recurring",    label: "Recurring",    icon: RefreshCw       },
