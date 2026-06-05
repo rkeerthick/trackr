@@ -222,7 +222,7 @@ export default function SettingsClient({ user, categories }: Props) {
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto space-y-5">
+    <div className="p-4 md:p-6 max-w-2xl mx-auto space-y-5">
       <h1 className="text-xl font-semibold" style={{ color: "var(--ss-text-1)" }}>Settings</h1>
 
       {/* Profile */}

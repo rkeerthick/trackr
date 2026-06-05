@@ -105,7 +105,7 @@ export default function RecurringClient({ rules, categories }: Props) {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-5">
+    <div className="p-4 md:p-6 max-w-4xl mx-auto space-y-5">
 
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -116,7 +116,7 @@ export default function RecurringClient({ rules, categories }: Props) {
           style={{ background: "var(--ss-blue-500)" }}
         >
           <Plus size={15} />
-          Add rule
+          <span className="hidden sm:inline">Add rule</span>
         </button>
       </div>
 

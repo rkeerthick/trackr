@@ -87,7 +87,7 @@ export default function ContactsClient({ contacts }: Props) {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-5">
+    <div className="p-4 md:p-6 max-w-4xl mx-auto space-y-5">
 
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -98,7 +98,7 @@ export default function ContactsClient({ contacts }: Props) {
           style={{ background: "var(--ss-blue-500)" }}
         >
           <Plus size={15} />
-          Add contact
+          <span className="hidden sm:inline">Add contact</span>
         </button>
       </div>
 

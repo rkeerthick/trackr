@@ -75,7 +75,7 @@ export default function AnalyticsClient({ transactions, monthlyTrend, month, yea
   const pieTotal = byCategory.reduce((s, c) => s + c.value, 0);
 
   return (
-    <div className="p-6 max-w-5xl mx-auto space-y-5">
+    <div className="p-4 md:p-6 max-w-5xl mx-auto space-y-5">
 
       {/* Header + month nav */}
       <div className="flex items-center justify-between">

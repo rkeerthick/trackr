@@ -127,7 +127,7 @@ export default function TransactionsClient({
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-4 md:p-6 max-w-4xl mx-auto">
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
@@ -140,12 +140,12 @@ export default function TransactionsClient({
           style={{ background: "var(--ss-blue-500)" }}
         >
           <Plus size={15} />
-          Add transaction
+          <span className="hidden sm:inline">Add transaction</span>
         </button>
       </div>
 
       {/* Filters row */}
-      <div className="flex items-center gap-3 mb-4 flex-wrap">
+      <div className="flex flex-wrap items-center gap-2 mb-4">
 
         {/* Month navigator */}
         <div

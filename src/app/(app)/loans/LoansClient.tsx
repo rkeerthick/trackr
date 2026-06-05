@@ -127,7 +127,7 @@ export default function LoansClient({ loans, contacts }: Props) {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-5">
+    <div className="p-4 md:p-6 max-w-4xl mx-auto space-y-5">
 
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -138,7 +138,7 @@ export default function LoansClient({ loans, contacts }: Props) {
           style={{ background: "var(--ss-blue-500)" }}
         >
           <Plus size={15} />
-          Add loan
+          <span className="hidden sm:inline">Add loan</span>
         </button>
       </div>
 

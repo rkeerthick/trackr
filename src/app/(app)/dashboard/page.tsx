@@ -90,7 +90,7 @@ export default async function DashboardPage() {
   ] as const;
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-4 md:p-6 max-w-5xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -107,7 +107,7 @@ export default async function DashboardPage() {
           style={{ background: "var(--ss-blue-500)" }}
         >
           <Plus size={15} />
-          Add transaction
+          <span className="hidden sm:inline">Add transaction</span>
         </a>
       </div>
 
