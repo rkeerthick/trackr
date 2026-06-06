@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { Plus, Search, X, ChevronLeft, ChevronRight } from "lucide-react";
+import CategorySelect, { type Category as CatType } from "@/components/CategorySelect";
 
 interface Category {
   id:   string;
@@ -66,7 +67,13 @@ export default function TransactionsClient({
     notes:       "",
   });
 
-  const filteredCategories = categories.filter((c) => c.type === form.type);
+  const [localCats, setLocalCats] = useState(categories);
+  const filteredCategories = localCats.filter((c) => c.type === form.type);
+
+  function handleCategoryChange(id: string, newCat?: CatType) {
+    if (newCat) setLocalCats((prev) => [...prev, newCat]);
+    setForm((f) => ({ ...f, categoryId: id }));
+  }
 
   const filtered = useMemo(() => {
     return transactions.filter((tx) => {
@@ -359,16 +366,12 @@ export default function TransactionsClient({
                 <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--ss-text-2)" }}>
                   Category
                 </label>
-                <select
+                <CategorySelect
+                  categories={filteredCategories}
                   value={form.categoryId}
-                  onChange={(e) => setForm((f) => ({ ...f, categoryId: e.target.value }))}
-                  style={inputStyle}
-                >
-                  <option value="">No category</option>
-                  {filteredCategories.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
-                  ))}
-                </select>
+                  type={form.type}
+                  onChange={handleCategoryChange}
+                />
               </div>
 
               {/* Date */}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, X, RefreshCw, Pause, Play, Trash2 } from "lucide-react";
+import CategorySelect, { type Category as CatType } from "@/components/CategorySelect";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { FREQUENCY_LABELS } from "@/types";
 
@@ -53,8 +54,14 @@ export default function RecurringClient({ rules, categories }: Props) {
     endDate:     "",
   });
 
-  const filteredCategories = categories.filter((c) => c.type === form.type);
+  const [localCats, setLocalCats] = useState(categories);
+  const filteredCategories = localCats.filter((c) => c.type === form.type);
   const visible = filter === "ACTIVE" ? rules.filter((r) => r.isActive) : rules;
+
+  function handleCategoryChange(id: string, newCat?: CatType) {
+    if (newCat) setLocalCats((prev) => [...prev, newCat]);
+    setForm((f) => ({ ...f, categoryId: id }));
+  }
   const activeCount   = rules.filter((r) => r.isActive).length;
   const inactiveCount = rules.filter((r) => !r.isActive).length;
 
@@ -290,14 +297,12 @@ export default function RecurringClient({ rules, categories }: Props) {
 
               <div>
                 <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--ss-text-2)" }}>Category</label>
-                <select value={form.categoryId}
-                  onChange={(e) => setForm((f) => ({ ...f, categoryId: e.target.value }))}
-                  style={inputStyle}>
-                  <option value="">No category</option>
-                  {filteredCategories.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
-                  ))}
-                </select>
+                <CategorySelect
+                  categories={filteredCategories}
+                  value={form.categoryId}
+                  type={form.type}
+                  onChange={handleCategoryChange}
+                />
               </div>
 
               <div>
