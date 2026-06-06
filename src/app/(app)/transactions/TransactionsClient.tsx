@@ -7,9 +7,10 @@ import { Plus, Search, X, ChevronLeft, ChevronRight } from "lucide-react";
 import CategorySelect, { type Category as CatType } from "@/components/CategorySelect";
 
 interface Category {
-  id:   string;
-  name: string;
-  type: "INCOME" | "EXPENSE";
+  id:    string;
+  name:  string;
+  type:  "INCOME" | "EXPENSE";
+  color: string;
 }
 
 interface Transaction {

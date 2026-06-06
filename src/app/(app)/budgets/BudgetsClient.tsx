@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Plus, Pencil, Trash2, X } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import CategorySelect, { Category as SelectCategory } from "@/components/CategorySelect";
 
 interface Category {
   id:    string;
@@ -30,6 +31,10 @@ const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov
 export default function BudgetsClient({ rows, categories, month, year }: Props) {
   const router = useRouter();
 
+  const [localCats, setLocalCats] = useState<SelectCategory[]>(
+    () => categories.map((c) => ({ ...c, type: "EXPENSE" as const }))
+  );
+
   const [showModal,  setShowModal]  = useState(false);
   const [editing,    setEditing]    = useState<BudgetRow | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -47,7 +52,7 @@ export default function BudgetsClient({ rows, categories, month, year }: Props) 
 
   function openAdd() {
     setEditing(null);
-    setForm({ categoryId: categories[0]?.id ?? "", amount: "" });
+    setForm({ categoryId: localCats[0]?.id ?? "", amount: "" });
     setFormError("");
     setShowModal(true);
   }
@@ -101,9 +106,6 @@ export default function BudgetsClient({ rows, categories, month, year }: Props) 
   const totalSpent    = rows.filter((r) => r.id).reduce((s, r) => s + r.spent, 0);
   const overBudget    = rows.filter((r) => r.id && r.spent > r.budgeted).length;
 
-  // Categories available to add a new budget (not yet budgeted this month)
-  const addableCategories = categories;
-
   const inputStyle = {
     width: "100%", padding: "8px 12px", borderRadius: "8px",
     border: "0.5px solid var(--ss-border)", background: "var(--ss-surface)",
@@ -129,16 +131,14 @@ export default function BudgetsClient({ rows, categories, month, year }: Props) 
               <ChevronRight size={15} style={{ color: "var(--ss-text-2)" }} />
             </button>
           </div>
-          {addableCategories.length > 0 && (
-            <button
-              onClick={openAdd}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white"
-              style={{ background: "var(--ss-blue-500)" }}
-            >
-              <Plus size={15} />
-              <span className="hidden sm:inline">Add budget</span>
-            </button>
-          )}
+          <button
+            onClick={openAdd}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white"
+            style={{ background: "var(--ss-blue-500)" }}
+          >
+            <Plus size={15} />
+            <span className="hidden sm:inline">Add budget</span>
+          </button>
         </div>
       </div>
 
@@ -167,11 +167,9 @@ export default function BudgetsClient({ rows, categories, month, year }: Props) 
         {rows.length === 0 ? (
           <div className="py-16 text-center">
             <p className="text-sm" style={{ color: "var(--ss-text-3)" }}>No budgets set for this month.</p>
-            {addableCategories.length > 0 && (
-              <button onClick={openAdd} className="mt-3 text-sm font-medium" style={{ color: "var(--ss-blue-500)" }}>
-                Add your first budget →
-              </button>
-            )}
+            <button onClick={openAdd} className="mt-3 text-sm font-medium" style={{ color: "var(--ss-blue-500)" }}>
+              Add your first budget →
+            </button>
           </div>
         ) : (
           <div className="divide-y" style={{ borderColor: "var(--ss-border)" }}>
@@ -261,16 +259,15 @@ export default function BudgetsClient({ rows, categories, month, year }: Props) 
                   <label className="block text-xs font-medium mb-1.5" style={{ color: "var(--ss-text-2)" }}>
                     Category
                   </label>
-                  <select
+                  <CategorySelect
+                    categories={localCats}
                     value={form.categoryId}
-                    onChange={(e) => setForm((f) => ({ ...f, categoryId: e.target.value }))}
-                    required
-                    style={inputStyle}
-                  >
-                    {addableCategories.map((c) => (
-                      <option key={c.id} value={c.id}>{c.name}</option>
-                    ))}
-                  </select>
+                    type="EXPENSE"
+                    onChange={(id, newCat) => {
+                      if (newCat) setLocalCats((prev) => [...prev, newCat]);
+                      setForm((f) => ({ ...f, categoryId: id }));
+                    }}
+                  />
                 </div>
               )}
 

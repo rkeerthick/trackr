@@ -7,7 +7,7 @@ import CategorySelect, { type Category as CatType } from "@/components/CategoryS
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { FREQUENCY_LABELS } from "@/types";
 
-interface Category { id: string; name: string; type: "INCOME" | "EXPENSE" }
+interface Category { id: string; name: string; type: "INCOME" | "EXPENSE"; color: string }
 
 interface RecurringRule {
   id:          string;
