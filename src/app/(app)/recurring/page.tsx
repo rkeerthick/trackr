@@ -15,7 +15,7 @@ export default async function RecurringPage() {
     prisma.category.findMany({
       where:   { userId },
       orderBy: { name: "asc" },
-      select:  { id: true, name: true, type: true },
+      select:  { id: true, name: true, type: true, color: true },
     }),
   ]);
 
@@ -30,7 +30,7 @@ export default async function RecurringPage() {
           type:        r.type      as "INCOME" | "EXPENSE",
           amount:      Number(r.amount),
           description: r.description,
-          category:    cat ? { id: cat.id, name: cat.name, type: cat.type as "INCOME" | "EXPENSE" } : null,
+          category:    cat ? { id: cat.id, name: cat.name, type: cat.type as "INCOME" | "EXPENSE", color: cat.color } : null,
           frequency:   r.frequency as "DAILY"|"WEEKLY"|"BIWEEKLY"|"MONTHLY"|"QUARTERLY"|"YEARLY",
           startDate:   r.startDate.toISOString(),
           nextDate:    r.nextDate.toISOString(),
@@ -39,9 +39,10 @@ export default async function RecurringPage() {
         };
       })}
       categories={categories.map((c) => ({
-        id:   c.id,
-        name: c.name,
-        type: c.type as "INCOME" | "EXPENSE",
+        id:    c.id,
+        name:  c.name,
+        type:  c.type as "INCOME" | "EXPENSE",
+        color: c.color,
       }))}
     />
   );

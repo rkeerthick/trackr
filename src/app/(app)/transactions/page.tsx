@@ -28,13 +28,14 @@ async function getData(userId: string, month: number, year: number) {
       notes:       tx.notes,
       date:        tx.date.toISOString(),
       category:    tx.category
-        ? { id: tx.category.id, name: tx.category.name, type: tx.category.type as "INCOME" | "EXPENSE" }
+        ? { id: tx.category.id, name: tx.category.name, type: tx.category.type as "INCOME" | "EXPENSE", color: tx.category.color }
         : null,
     })),
     categories: categories.map((c) => ({
-      id:   c.id,
-      name: c.name,
-      type: c.type as "INCOME" | "EXPENSE",
+      id:    c.id,
+      name:  c.name,
+      type:  c.type as "INCOME" | "EXPENSE",
+      color: c.color,
     })),
   };
 }
