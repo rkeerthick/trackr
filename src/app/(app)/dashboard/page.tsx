@@ -57,7 +57,7 @@ async function getDashboardData(userId: string) {
     c.amount += Number(tx.amount);
     catMap.set(tx.categoryId!, c);
   }
-  const topCategories = [...catMap.values()]
+  const topCategories = Array.from(catMap.values())
     .sort((a, b) => b.amount - a.amount)
     .slice(0, 5);
 
