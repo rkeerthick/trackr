@@ -107,7 +107,7 @@ export default function AIChatClient({ context }: Props) {
         </div>
         <div>
           <h1 className="text-sm font-semibold" style={{ color: "var(--ss-text-1)" }}>AI Finance Assistant</h1>
-          <p className="text-xs" style={{ color: "var(--ss-text-3)" }}>Powered by Groq · Knows your {context.month} data</p>
+          <p className="text-xs" style={{ color: "var(--ss-text-3)" }}>Knows your {context.month} data</p>
         </div>
       </div>
 

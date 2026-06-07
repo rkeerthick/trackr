@@ -38,9 +38,6 @@ export default function AIInsights(props: Props) {
           <Sparkles size={13} style={{ color: "var(--ss-blue-500)" }} />
         </div>
         <h2 className="text-sm font-semibold" style={{ color: "var(--ss-text-1)" }}>AI Insights</h2>
-        <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full ml-1" style={{ background: "var(--ss-blue-50)", color: "var(--ss-blue-500)" }}>
-          Powered by Groq
-        </span>
       </div>
 
       {loading && (
