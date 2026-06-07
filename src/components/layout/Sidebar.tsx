@@ -7,7 +7,7 @@ import { cn, initials } from "@/lib/utils";
 import {
   LayoutDashboard, ArrowLeftRight, PieChart, Target,
   Users, Calculator, RefreshCw, Wallet, Trophy,
-  Settings, LogOut, ChevronLeft,
+  Settings, LogOut, ChevronLeft, Sparkles,
 } from "lucide-react";
 import { useAppStore } from "@/store/app.store";
 
@@ -21,6 +21,7 @@ const NAV = [
   { href: "/splits",       label: "Splits",       icon: Calculator      },
   { href: "/recurring",    label: "Recurring",    icon: RefreshCw       },
   { href: "/contacts",     label: "Contacts",     icon: Users           },
+  { href: "/ai-chat",      label: "AI Assistant", icon: Sparkles        },
 ];
 
 const BG      = "#1E2B3C";

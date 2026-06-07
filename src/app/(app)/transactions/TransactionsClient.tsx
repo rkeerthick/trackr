@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { Plus, Search, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Search, X, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import CategorySelect, { type Category as CatType } from "@/components/CategorySelect";
 
 interface Category {
@@ -71,8 +71,38 @@ export default function TransactionsClient({
   const [localCats, setLocalCats] = useState(categories);
   const filteredCategories = localCats.filter((c) => c.type === form.type);
 
+  const [aiSuggestion, setAiSuggestion] = useState<{ categoryId: string; categoryName: string } | null>(null);
+  const [aiLoading,    setAiLoading]    = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    setAiSuggestion(null);
+    if (form.description.length < 3 || !showModal) return;
+    setAiLoading(true);
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/ai/suggest-category", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({
+            description: form.description,
+            type:        form.type,
+            categories:  filteredCategories.map((c) => ({ id: c.id, name: c.name })),
+          }),
+        });
+        const data = await res.json();
+        if (data.categoryId) setAiSuggestion({ categoryId: data.categoryId, categoryName: data.categoryName });
+      } catch { /* ignore */ } finally {
+        setAiLoading(false);
+      }
+    }, 700);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.description, form.type, showModal]);
+
   function handleCategoryChange(id: string, newCat?: CatType) {
     if (newCat) setLocalCats((prev) => [...prev, newCat]);
+    setAiSuggestion(null);
     setForm((f) => ({ ...f, categoryId: id }));
   }
 
@@ -373,6 +403,25 @@ export default function TransactionsClient({
                   type={form.type}
                   onChange={handleCategoryChange}
                 />
+                {aiLoading && (
+                  <p className="text-[11px] mt-1.5 flex items-center gap-1" style={{ color: "var(--ss-text-3)" }}>
+                    <Sparkles size={10} /> Suggesting…
+                  </p>
+                )}
+                {!aiLoading && aiSuggestion && !form.categoryId && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setForm((f) => ({ ...f, categoryId: aiSuggestion.categoryId }));
+                      setAiSuggestion(null);
+                    }}
+                    className="mt-1.5 flex items-center gap-1 text-[11px] font-medium"
+                    style={{ color: "var(--ss-blue-500)" }}
+                  >
+                    <Sparkles size={10} />
+                    AI suggests: {aiSuggestion.categoryName} — tap to apply
+                  </button>
+                )}
               </div>
 
               {/* Date */}

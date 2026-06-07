@@ -7,6 +7,7 @@ import {
   Plus, Target, ChevronRight,
 } from "lucide-react";
 import SpendingChart from "./SpendingChart";
+import AIInsights from "./AIInsights";
 
 const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
@@ -18,9 +19,11 @@ async function getDashboardData(userId: string) {
   const end   = new Date(year, month, 0, 23, 59, 59);
 
   // 5 months back so we have 6 bars total (including current month)
-  const trendStart = new Date(year, month - 6, 1);
+  const trendStart  = new Date(year, month - 6, 1);
+  const prevStart   = new Date(year, month - 2, 1);
+  const prevEnd     = new Date(year, month - 1, 0, 23, 59, 59);
 
-  const [allMonthTx, loans, goals, budgets, trendTx] = await Promise.all([
+  const [allMonthTx, loans, goals, budgets, trendTx, prevTx] = await Promise.all([
     prisma.transaction.findMany({
       where:   { userId, date: { gte: start, lte: end } },
       include: { category: { select: { id: true, name: true, color: true } } },
@@ -41,6 +44,10 @@ async function getDashboardData(userId: string) {
     prisma.transaction.findMany({
       where:  { userId, date: { gte: trendStart, lt: start } },
       select: { type: true, amount: true, date: true },
+    }),
+    prisma.transaction.findMany({
+      where:  { userId, type: "EXPENSE", date: { gte: prevStart, lte: prevEnd } },
+      select: { amount: true },
     }),
   ]);
 
@@ -111,6 +118,7 @@ async function getDashboardData(userId: string) {
     topCategories,
     budgetRows,
     trendData,
+    prevMonthExpenses: prevTx.reduce((s, t) => s + Number(t.amount), 0),
     month, year,
   };
 }
@@ -221,6 +229,17 @@ export default async function DashboardPage() {
           )}
         </div>
       </div>
+
+      {/* AI Insights */}
+      <AIInsights
+        month={`${MONTH_NAMES[data.month - 1]} ${data.year}`}
+        income={data.totalIncome}
+        expenses={data.totalExpenses}
+        prevMonthExpenses={data.prevMonthExpenses}
+        topCategories={data.topCategories.map(({ name, amount }) => ({ name, amount }))}
+        budgets={data.budgetRows.map(({ name, budgeted, spent }) => ({ name, budgeted, spent }))}
+        goals={data.goals.map(({ name, targetAmount, savedAmount }) => ({ name, targetAmount, savedAmount }))}
+      />
 
       {/* Budget overview + Goals */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
