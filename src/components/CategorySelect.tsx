@@ -47,8 +47,7 @@ export default function CategorySelect({ categories, value, type, onChange }: Pr
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  async function handleAdd(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleAdd() {
     if (!name.trim()) return;
     setSaving(true); setError("");
     try {
@@ -149,12 +148,13 @@ export default function CategorySelect({ categories, value, type, onChange }: Pr
                 </button>
               </div>
 
-              <form onSubmit={handleAdd} className="space-y-2.5">
+              <div className="space-y-2.5">
                 <input
                   autoFocus
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAdd(); } }}
                   placeholder="Category name"
                   className="w-full px-2.5 py-1.5 rounded-lg text-xs outline-none"
                   style={{ border: "0.5px solid var(--ss-border)", background: "var(--ss-surface)", color: "var(--ss-text-1)" }}
@@ -180,13 +180,13 @@ export default function CategorySelect({ categories, value, type, onChange }: Pr
                     style={{ background: "var(--ss-surface)", color: "var(--ss-text-2)", border: "0.5px solid var(--ss-border)" }}>
                     Cancel
                   </button>
-                  <button type="submit" disabled={saving || !name.trim()}
+                  <button type="button" onClick={handleAdd} disabled={saving || !name.trim()}
                     className="flex-1 py-1.5 rounded-lg text-xs font-medium text-white disabled:opacity-50"
                     style={{ background: "var(--ss-blue-500)" }}>
                     {saving ? "Adding…" : "Add"}
                   </button>
                 </div>
-              </form>
+              </div>
             </div>
           ) : (
             <button type="button"
