@@ -372,8 +372,8 @@ export default function SettingsClient({ user, categories }: Props) {
 
       {/* Sign out */}
       <Section title="Account">
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex items-center justify-between gap-4">
+          <div className="min-w-0">
             <p className="text-sm font-medium" style={{ color: "var(--ss-text-1)" }}>Sign out</p>
             <p className="text-xs mt-0.5" style={{ color: "var(--ss-text-3)" }}>
               Sign out of your Trackr account on this device.
@@ -381,7 +381,7 @@ export default function SettingsClient({ user, categories }: Props) {
           </div>
           <button
             onClick={() => signOut({ callbackUrl: "/login" })}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
             style={{
               background: "var(--ss-expense-bg)",
               color:      "var(--ss-expense)",
