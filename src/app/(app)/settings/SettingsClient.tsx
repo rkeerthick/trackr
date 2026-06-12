@@ -73,10 +73,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function SaveBtn({ loading, saved }: { loading: boolean; saved: boolean }) {
+function SaveBtn({ loading, saved, disabled }: { loading: boolean; saved: boolean; disabled?: boolean }) {
   return (
-    <button type="submit" disabled={loading}
-      className="px-5 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-60 transition-colors"
+    <button type="submit" disabled={loading || disabled}
+      className="px-5 py-2 rounded-lg text-sm font-medium text-white disabled:opacity-40 transition-colors"
       style={{ background: saved ? "var(--ss-income)" : "var(--ss-blue-500)" }}>
       {loading ? "Saving…" : saved ? "Saved ✓" : "Save changes"}
     </button>
@@ -253,7 +253,7 @@ export default function SettingsClient({ user, categories }: Props) {
           </div>
           {profileError && <p className="text-xs" style={{ color: "var(--ss-expense)" }}>{profileError}</p>}
           <div className="flex justify-end">
-            <SaveBtn loading={profileSaving} saved={profileSaved} />
+            <SaveBtn loading={profileSaving} saved={profileSaved} disabled={name === (user.name ?? "")} />
           </div>
         </form>
       </Section>
@@ -279,7 +279,7 @@ export default function SettingsClient({ user, categories }: Props) {
           </div>
           {prefError && <p className="text-xs" style={{ color: "var(--ss-expense)" }}>{prefError}</p>}
           <div className="flex justify-end">
-            <SaveBtn loading={prefSaving} saved={prefSaved} />
+            <SaveBtn loading={prefSaving} saved={prefSaved} disabled={currency === user.currency && locale === user.locale} />
           </div>
         </form>
       </Section>
@@ -308,7 +308,7 @@ export default function SettingsClient({ user, categories }: Props) {
             </div>
             {pwError  && <p className="text-xs" style={{ color: "var(--ss-expense)" }}>{pwError}</p>}
             <div className="flex justify-end">
-              <SaveBtn loading={pwSaving} saved={pwSaved} />
+              <SaveBtn loading={pwSaving} saved={pwSaved} disabled={!pwForm.current || !pwForm.next || !pwForm.confirm} />
             </div>
           </form>
         </Section>
