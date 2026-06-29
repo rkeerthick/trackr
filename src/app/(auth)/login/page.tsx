@@ -1,3 +1,4 @@
+﻿import { Suspense } from "react";
 import LoginForm from "./LoginForm";
 
 export default async function LoginPage() {
@@ -34,7 +35,9 @@ export default async function LoginPage() {
           >
             Sign in to your account
           </h2>
-          <LoginForm />
+          <Suspense fallback={null}>
+            <LoginForm />
+          </Suspense>
         </div>
 
         <p
