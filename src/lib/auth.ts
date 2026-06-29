@@ -93,14 +93,11 @@ export const authOptions: NextAuthOptions = {
   events: {
     async createUser({ user }) {
       if (user.id) {
-        // Seed default categories and set defaults for OAuth-created users
-        await Promise.all([
-          seedDefaultCategories(user.id),
-          prisma.user.update({
-            where: { id: user.id },
-            data:  { currency: "INR", locale: "en-IN" },
-          }),
-        ]);
+        try {
+          await seedDefaultCategories(user.id);
+        } catch (err) {
+          console.error("[createUser] Failed to seed categories:", err);
+        }
       }
     },
   },
